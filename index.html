@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sonora UC3M · Programación y podcasts</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --sonora-red: #be1622;
+      --sonora-red-dark: #891019;
+      --bg: #1a0406;
+      --card-bg: rgba(255,255,255,0.06);
+      --card-border: rgba(255,255,255,0.16);
+      --pill-bg: rgba(255,255,255,0.1);
+      --text-main: #ffffff;
+      --text-muted: #d3d3d3;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top, #e43743 0%, var(--sonora-red) 40%, #53050b 100%);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 18px 16px 120px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .brand-main {
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand-sub {
+      font-size: 0.8rem;
+      opacity: 0.85;
+    }
+
+    .btn-ghost {
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.7);
+      padding: 7px 16px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      background: rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255,255,255,0.12);
+    }
+
+    .hero-title {
+      font-size: 2.1rem;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .hero-title span {
+      color: #ffe082;
+    }
+
+    .hero-sub {
+      font-size: 0.95rem;
+      opacity: 0.9;
+      max-width: 620px;
+      margin-bottom: 16px;
+    }
+
+    .sections {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    section {
+      background: rgba(0,0,0,0.18);
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 14px 16px 16px;
+      backdrop-filter: blur(18px);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+      gap: 8px;
+    }
+
+    .section-title {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+    }
+
+    .section-caption {
+      font-size: 0.8rem;
+      opacity: 0.8;
+    }
+
+    /* Programas en diferido */
+
+    .programas-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .programa-card {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 12px 12px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      border: 1px solid var(--card-border);
+    }
+
+    .programa-nombre {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .programa-desc {
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+
+    .programa-plataformas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .pill-link {
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #ffffff;
+      color: var(--sonora-red-dark);
+      font-weight: 600;
+    }
+
+    .pill-link:hover { filter: brightness(1.05); }
+
+    /* === DIRECTO · MARTES / JUEVES (versión mejorada) === */
+
+    .live-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    /* Tarjeta de día en directo */
+    .live-day {
+      position: relative;
+      border-radius: 18px;
+      padding: 12px 14px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: radial-gradient(circle at top left, rgba(255,255,255,0.14), rgba(0,0,0,0.35));
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+    }
+
+    /* Versión “hoy” más marcada */
+    .live-day--today {
+      border-color: rgba(255,255,255,0.7);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.55);
+      background: radial-gradient(circle at top left, #ff8a65, #bf1c27);
+    }
+
+    .live-day-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .live-day-name {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-weight: 700;
+    }
+
+    .live-badge {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+
+    .live-slot {
+      font-size: 0.86rem;
+      opacity: 0.96;
+    }
+
+    .live-slot + .live-slot {
+      margin-top: 4px;
+    }
+
+    .live-slot span {
+      font-weight: 600;
+      color: #ffe082;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.8rem;
+      opacity: 0.8;
+      margin-top: 16px;
+    }
+
+    .floating-player-btn {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: #ffffff;
+      color: var(--sonora-red-dark);
+      font-size: 0.85rem;
+      font-weight: 700;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.35);
+      z-index: 999;
+      text-decoration: none;
+    }
+
+    .floating-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: #ff5252;
+      box-shadow: 0 0 0 4px rgba(255,82,82,0.5);
+    }
+
+    @media (min-width: 720px) {
+      .hero {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 18px;
+        margin-bottom: 8px;
+      }
+      .hero-sub {
+        text-align: right;
+        margin-left: auto;
+      }
+      .live-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page">
+    <header>
+      <div class="brand">
+        <div class="brand-main">SONORA UC3M</div>
+        <div class="brand-sub">Programación & podcasts oficiales</div>
+      </div>
+      <a class="btn-ghost" href="https://www.instagram.com/sonorauc3m" target="_blank">
+        @sonorauc3m
+      </a>
+    </header>
+
+    <div class="hero">
+      <div>
+        <h1 class="hero-title">
+          Todo lo que suena en <span>Sonora</span>
+        </h1>
+      </div>
+      <p class="hero-sub">
+        Martes y jueves en directo desde la UC3M. El resto del tiempo, tus programas en diferido para escuchar cuando quieras.
+      </p>
+    </div>
+
+    <div class="sections">
+
+      <!-- Programas en diferido -->
+      <section>
+        <div class="section-header">
+          <div class="section-title">Programas en diferido</div>
+          <div class="section-caption">Desde Spotify, iVoox, YouTube…</div>
+        </div>
+        <div id="programas-list" class="programas-list">
+          <!-- JS rellena aquí -->
+        </div>
+      </section>
+
+      <!-- Directo martes / jueves -->
+      <section>
+        <div class="section-header">
+          <div class="section-title">Directo · Martes y Jueves</div>
+          <div class="section-caption">Horario CET · Emisión desde el estudio UC3M</div>
+        </div>
+        <div id="live-grid" class="live-grid">
+          <!-- JS rellena aquí -->
+        </div>
+      </section>
+
+      <footer>
+        La radio de la Universidad Carlos III de Madrid · Sonora UC3M
+      </footer>
+    </div>
+  </div>
+
+  <a class="floating-player-btn" href="https://radio.radiobot.org/public/sonora" target="_blank">
+    <span class="floating-dot"></span>
+    <span>Escuchar en directo</span>
+  </a>
+
+  <script>
+    // ID de tu hoja de Google Sheets
+    const SHEET_ID = "1g9f3Ue9GtdaTbpxp3DCXncrNPhjnHPk0m9QTXdfSAxM";
+
+    const ODF_SHEET_NAME  = "OnDemand";
+    const LIVE_SHEET_NAME = "Directo";
+
+    function gvizUrl(sheetName) {
+      return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
+    }
+
+    async function fetchSheet(sheetName) {
+      const res = await fetch(gvizUrl(sheetName));
+      const text = await res.text();
+      const json = JSON.parse(text.substr(47).slice(0, -2)); // recorta wrapper gviz
+      const rows = json.table.rows || [];
+      return rows.map(r => (r.c || []).map(c => (c && c.v) ? String(c.v) : ""));
+    }
+
+    async function loadData() {
+      try {
+        const [onDemandRows, liveRows] = await Promise.all([
+          fetchSheet(ODF_SHEET_NAME),
+          fetchSheet(LIVE_SHEET_NAME)
+        ]);
+        renderOnDemand(onDemandRows);
+        renderLive(liveRows);
+      } catch (err) {
+        console.error("Error cargando datos:", err);
+        document.getElementById("programas-list").innerHTML =
+          "<div style='font-size:0.85rem;opacity:0.8;'>No se ha podido cargar la programación ahora mismo.</div>";
+      }
+    }
+
+    function renderOnDemand(rows) {
+      const cont = document.getElementById("programas-list");
+      cont.innerHTML = "";
+
+      if (!rows.length) {
+        cont.textContent = "No hay programas configurados todavía.";
+        return;
+      }
+
+      // Fila 0 = encabezados
+      rows.slice(1).forEach(cols => {
+        const [nombre, descripcion, spotify, ivoox, youtube] = cols;
+        if (!nombre) return;
+
+        const card = document.createElement("article");
+        card.className = "programa-card";
+
+        const name = document.createElement("div");
+        name.className = "programa-nombre";
+        name.textContent = nombre;
+
+        const desc = document.createElement("div");
+        desc.className = "programa-desc";
+        desc.textContent = descripcion || "";
+
+        const plats = document.createElement("div");
+        plats.className = "programa-plataformas";
+
+        if (spotify) plats.appendChild(createPlatButton("Spotify", spotify));
+        if (ivoox)   plats.appendChild(createPlatButton("iVoox", ivoox));
+        if (youtube) plats.appendChild(createPlatButton("YouTube", youtube));
+
+        card.appendChild(name);
+        if (descripcion) card.appendChild(desc);
+        if (plats.children.length) card.appendChild(plats);
+
+        cont.appendChild(card);
+      });
+    }
+
+    function createPlatButton(label, url) {
+      const a = document.createElement("a");
+      a.className = "pill-link";
+      a.href = url;
+      a.target = "_blank";
+      a.textContent = label;
+      return a;
+    }
+
+    function renderLive(rows) {
+      const cont = document.getElementById("live-grid");
+      cont.innerHTML = "";
+
+      if (!rows.length) {
+        cont.textContent = "No hay horarios configurados todavía.";
+        return;
+      }
+
+      // Día actual en minúsculas
+      const diasSemana = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+      const hoyKey = diasSemana[new Date().getDay()]; // ej. "martes"
+
+      const byDay = {};
+      rows.slice(1).forEach(cols => {
+        const [dia, hora, programa] = cols;
+        if (!dia || !hora || !programa) return;
+
+        const key = dia.trim().toLowerCase(); // "martes" / "jueves"
+        if (!byDay[key]) byDay[key] = [];
+        byDay[key].push({ hora, programa });
+      });
+
+      ["martes", "jueves"].forEach(key => {
+        const slots = byDay[key];
+        if (!slots || !slots.length) return;
+
+        const day = document.createElement("div");
+        day.className = "live-day";
+
+        const header = document.createElement("div");
+        header.className = "live-day-header";
+
+        const name = document.createElement("div");
+        name.className = "live-day-name";
+        name.textContent = key.toUpperCase();
+
+        header.appendChild(name);
+
+        // Si hoy es este día, resaltamos
+        if (key === hoyKey) {
+          day.classList.add("live-day--today");
+          const badge = document.createElement("span");
+          badge.className = "live-badge";
+          badge.textContent = "HOY";
+          header.appendChild(badge);
+        }
+
+        day.appendChild(header);
+
+        slots.forEach(s => {
+          const p = document.createElement("div");
+          p.className = "live-slot";
+          p.innerHTML = `<span>${s.hora}</span> · ${s.programa}`;
+          day.appendChild(p);
+        });
+
+        cont.appendChild(day);
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", loadData);
+  </script>
+</body>
+</html>
