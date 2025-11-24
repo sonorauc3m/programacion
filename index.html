@@ -133,6 +133,29 @@
       opacity: 0.8;
     }
 
+    /* Bloque de estado en directo (ahora / siguiente) */
+    .live-status {
+      margin-bottom: 10px;
+      padding: 8px 12px;
+      border-radius: 16px;
+      background: rgba(0, 0, 0, 0.26);
+      font-size: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .live-status-strong {
+      font-weight: 700;
+    }
+
+    .live-status-label {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.75rem;
+      opacity: 0.85;
+    }
+
     /* Programas en diferido */
 
     .programas-list {
@@ -302,6 +325,12 @@
           <div class="section-title">Directo · Martes y Jueves</div>
           <div class="section-caption">Horario CET · Emisión desde el estudio UC3M</div>
         </div>
+
+        <!-- Estado de emisión actual / siguiente -->
+        <div id="live-status" class="live-status">
+          <!-- JS rellena aquí -->
+        </div>
+
         <div id="live-grid" class="live-grid">
           <!-- JS rellena aquí -->
         </div>
@@ -402,20 +431,28 @@
       return a;
     }
 
+    // --- DIRECTO ---
+
     function renderLive(rows) {
       const cont = document.getElementById("live-grid");
       cont.innerHTML = "";
+
+      if (!rows.length) {
+        cont.textContent = "No hay horarios configurados todavía.";
+        return;
+      }
 
       const byDay = {};
       rows.slice(1).forEach(cols => {
         const [dia, hora, programa] = cols;
         if (!dia || !hora || !programa) return;
 
-        const key = dia.trim().toLowerCase();
+        const key = dia.trim().toLowerCase(); // "martes", "jueves", etc.
         if (!byDay[key]) byDay[key] = [];
         byDay[key].push({ hora, programa });
       });
 
+      // Pintar tarjetas por día
       ["martes", "jueves"].forEach(key => {
         const slots = byDay[key];
         if (!slots || !slots.length) return;
@@ -442,6 +479,122 @@
 
         cont.appendChild(day);
       });
+
+      // Actualizar bloque "Ahora / Siguiente"
+      updateLiveStatus(byDay);
+    }
+
+    // Devuelve minutos desde medianoche a partir de "HH:MM"
+    function parseTimeToMinutes(str) {
+      const match = str.trim().match(/(\d{1,2}):(\d{2})/);
+      if (!match) return null;
+      const h = parseInt(match[1], 10);
+      const m = parseInt(match[2], 10);
+      return h * 60 + m;
+    }
+
+    // De un rango "HH:MM–HH:MM" o "HH:MM - HH:MM" devuelve {start,end,startLabel,endLabel}
+    function parseRange(rangeStr) {
+      const parts = rangeStr.split(/[-–—]/); // soporta -, – , —
+      if (parts.length < 2) return null;
+      const startLabel = parts[0].trim();
+      const endLabel = parts[1].trim();
+      const start = parseTimeToMinutes(startLabel);
+      const end   = parseTimeToMinutes(endLabel);
+      if (start == null || end == null) return null;
+      return { start, end, startLabel, endLabel };
+    }
+
+    function updateLiveStatus(byDay) {
+      const box = document.getElementById("live-status");
+      if (!box) return;
+
+      const now = new Date();
+      // Hora actual en Madrid
+      const timeStr = new Intl.DateTimeFormat("es-ES", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+        timeZone: "Europe/Madrid"
+      }).format(now);
+      const [hStr, mStr] = timeStr.split(":");
+      const nowMinutes = parseInt(hStr, 10) * 60 + parseInt(mStr, 10);
+
+      // Día de la semana en Madrid (lunes, martes, etc.)
+      const weekday = new Intl.DateTimeFormat("es-ES", {
+        weekday: "long",
+        timeZone: "Europe/Madrid"
+      }).format(now).toLowerCase();
+
+      const order = ["martes", "jueves"]; // días de emisión
+
+      function getSlotsFor(dayKey) {
+        const raw = byDay[dayKey] || [];
+        return raw
+          .map(s => {
+            const range = parseRange(s.hora);
+            if (!range) return null;
+            return { ...s, ...range };
+          })
+          .filter(Boolean)
+          .sort((a, b) => a.start - b.start);
+      }
+
+      const todayKey = order.includes(weekday) ? weekday : null;
+      let current = null;
+      let next = null;
+
+      if (todayKey) {
+        const todaySlots = getSlotsFor(todayKey);
+        current = todaySlots.find(s => nowMinutes >= s.start && nowMinutes < s.end);
+        next = todaySlots.find(s => s.start > nowMinutes) || null;
+      }
+
+      // Si no hay "next" hoy, buscar en el siguiente día de emisión
+      if (!next) {
+        const idxToday = todayKey ? order.indexOf(todayKey) : -1;
+        const searchDays = [];
+
+        if (idxToday >= 0) {
+          // días después de hoy en el orden
+          for (let i = idxToday + 1; i < order.length; i++) {
+            searchDays.push(order[i]);
+          }
+        }
+        // y si no hay nada o no es día de emisión, añadimos todos
+        if (!searchDays.length) {
+          searchDays.push(...order);
+        }
+
+        for (const day of searchDays) {
+          const slots = getSlotsFor(day);
+          if (slots.length) {
+            next = { ...slots[0], day };
+            break;
+          }
+        }
+      }
+
+      // Construir el texto
+      let html = "";
+
+      if (current) {
+        html += `<div class="live-status-label">AHORA EN DIRECTO</div>`;
+        html += `<div><span class="live-status-strong">${current.programa}</span> · hasta ${current.endLabel}h</div>`;
+      } else {
+        html += `<div class="live-status-label">AHORA MISMO</div>`;
+        html += `<div>No hay ningún programa en directo en este momento.</div>`;
+      }
+
+      if (next) {
+        const dayLabel = next.day && next.day !== todayKey
+          ? ` (${next.day.toUpperCase()})`
+          : "";
+        html += `<div style="margin-top:4px;"><span class="live-status-label">SIGUIENTE</span></div>`;
+        html += `<div>${next.startLabel}h${dayLabel} · <span class="live-status-strong">${next.programa}</span></div>`;
+      }
+
+      box.innerHTML = html;
     }
 
     document.addEventListener("DOMContentLoaded", loadData);
