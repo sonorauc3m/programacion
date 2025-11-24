@@ -180,62 +180,38 @@
 
     .pill-link:hover { filter: brightness(1.05); }
 
-    /* === DIRECTO · MARTES / JUEVES (versión mejorada) === */
+    /* Directo */
 
     .live-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 12px;
+      gap: 10px;
     }
 
-    /* Tarjeta de día en directo */
     .live-day {
-      position: relative;
-      border-radius: 18px;
-      padding: 12px 14px;
-      border: 1px solid rgba(255,255,255,0.18);
-      background: radial-gradient(circle at top left, rgba(255,255,255,0.14), rgba(0,0,0,0.35));
-      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
-    }
-
-    /* Versión “hoy” más marcada */
-    .live-day--today {
-      border-color: rgba(255,255,255,0.7);
-      box-shadow: 0 14px 34px rgba(0,0,0,0.55);
-      background: radial-gradient(circle at top left, #ff8a65, #bf1c27);
+      background: rgba(255,255,255,0.06);
+      border-radius: 16px;
+      padding: 10px 12px;
+      border: 1px solid var(--card-border);
     }
 
     .live-day-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .live-day-name {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       text-transform: uppercase;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.12em;
       font-weight: 700;
     }
 
-    .live-badge {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: rgba(0,0,0,0.4);
-      border: 1px solid rgba(255,255,255,0.6);
-    }
-
     .live-slot {
-      font-size: 0.86rem;
-      opacity: 0.96;
-    }
-
-    .live-slot + .live-slot {
-      margin-top: 4px;
+      font-size: 0.85rem;
+      opacity: 0.95;
     }
 
     .live-slot span {
@@ -320,24 +296,24 @@
 
     <div class="sections">
 
-      <!-- Programas en diferido -->
-      <section>
-        <div class="section-header">
-          <div class="section-title">Programas en diferido</div>
-          <div class="section-caption">Desde Spotify, iVoox, YouTube…</div>
-        </div>
-        <div id="programas-list" class="programas-list">
-          <!-- JS rellena aquí -->
-        </div>
-      </section>
-
-      <!-- Directo martes / jueves -->
+      <!-- DIRECTO ARRIBA -->
       <section>
         <div class="section-header">
           <div class="section-title">Directo · Martes y Jueves</div>
           <div class="section-caption">Horario CET · Emisión desde el estudio UC3M</div>
         </div>
         <div id="live-grid" class="live-grid">
+          <!-- JS rellena aquí -->
+        </div>
+      </section>
+
+      <!-- DIFERIDO ABAJO -->
+      <section>
+        <div class="section-header">
+          <div class="section-title">Programas en diferido</div>
+          <div class="section-caption">Desde Spotify, iVoox, YouTube…</div>
+        </div>
+        <div id="programas-list" class="programas-list">
           <!-- JS rellena aquí -->
         </div>
       </section>
@@ -354,9 +330,7 @@
   </a>
 
   <script>
-    // ID de tu hoja de Google Sheets
     const SHEET_ID = "1g9f3Ue9GtdaTbpxp3DCXncrNPhjnHPk0m9QTXdfSAxM";
-
     const ODF_SHEET_NAME  = "OnDemand";
     const LIVE_SHEET_NAME = "Directo";
 
@@ -367,7 +341,7 @@
     async function fetchSheet(sheetName) {
       const res = await fetch(gvizUrl(sheetName));
       const text = await res.text();
-      const json = JSON.parse(text.substr(47).slice(0, -2)); // recorta wrapper gviz
+      const json = JSON.parse(text.substr(47).slice(0, -2));
       const rows = json.table.rows || [];
       return rows.map(r => (r.c || []).map(c => (c && c.v) ? String(c.v) : ""));
     }
@@ -382,8 +356,6 @@
         renderLive(liveRows);
       } catch (err) {
         console.error("Error cargando datos:", err);
-        document.getElementById("programas-list").innerHTML =
-          "<div style='font-size:0.85rem;opacity:0.8;'>No se ha podido cargar la programación ahora mismo.</div>";
       }
     }
 
@@ -391,12 +363,6 @@
       const cont = document.getElementById("programas-list");
       cont.innerHTML = "";
 
-      if (!rows.length) {
-        cont.textContent = "No hay programas configurados todavía.";
-        return;
-      }
-
-      // Fila 0 = encabezados
       rows.slice(1).forEach(cols => {
         const [nombre, descripcion, spotify, ivoox, youtube] = cols;
         if (!nombre) return;
@@ -440,21 +406,12 @@
       const cont = document.getElementById("live-grid");
       cont.innerHTML = "";
 
-      if (!rows.length) {
-        cont.textContent = "No hay horarios configurados todavía.";
-        return;
-      }
-
-      // Día actual en minúsculas
-      const diasSemana = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
-      const hoyKey = diasSemana[new Date().getDay()]; // ej. "martes"
-
       const byDay = {};
       rows.slice(1).forEach(cols => {
         const [dia, hora, programa] = cols;
         if (!dia || !hora || !programa) return;
 
-        const key = dia.trim().toLowerCase(); // "martes" / "jueves"
+        const key = dia.trim().toLowerCase();
         if (!byDay[key]) byDay[key] = [];
         byDay[key].push({ hora, programa });
       });
@@ -474,16 +431,6 @@
         name.textContent = key.toUpperCase();
 
         header.appendChild(name);
-
-        // Si hoy es este día, resaltamos
-        if (key === hoyKey) {
-          day.classList.add("live-day--today");
-          const badge = document.createElement("span");
-          badge.className = "live-badge";
-          badge.textContent = "HOY";
-          header.appendChild(badge);
-        }
-
         day.appendChild(header);
 
         slots.forEach(s => {
