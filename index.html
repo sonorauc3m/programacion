@@ -5,18 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sonora UC3M · Programación y podcasts</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
-
+  <!-- Si tienes Helvetica Now Display instalada, el navegador la usará -->
   <style>
     :root {
       --sonora-red: #be1622;
-      --sonora-red-dark: #891019;
-      --bg: #1a0406;
-      --card-bg: rgba(255,255,255,0.06);
+      --sonora-red-dark: #8c1019;
+      --sonora-red-darker: #550910;
+      --bg-deep: #190306;
+      --card-bg: rgba(0,0,0,0.32);
       --card-border: rgba(255,255,255,0.16);
-      --pill-bg: rgba(255,255,255,0.1);
+      --pill-bg: rgba(255,255,255,0.06);
       --text-main: #ffffff;
-      --text-muted: #d3d3d3;
+      --text-muted: #e0e0e0;
+      --text-soft: #b9b9b9;
     }
 
     * {
@@ -27,8 +28,10 @@
 
     body {
       min-height: 100vh;
-      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background: radial-gradient(circle at top, #e43743 0%, var(--sonora-red) 40%, #53050b 100%);
+      font-family: "Helvetica Now Display", "Helvetica Neue", Helvetica,
+        system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background:
+        radial-gradient(circle at top, #f04753 0%, var(--sonora-red) 35%, var(--sonora-red-darker) 100%);
       color: var(--text-main);
       display: flex;
       flex-direction: column;
@@ -60,64 +63,81 @@
     }
 
     .brand-main {
-      font-size: 1.3rem;
+      font-size: 1.35rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
 
     .brand-sub {
-      font-size: 0.8rem;
-      opacity: 0.85;
+      font-size: 0.78rem;
+      opacity: 0.8;
     }
 
     .btn-ghost {
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.7);
       padding: 7px 16px;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       font-weight: 600;
-      background: rgba(0,0,0,0.2);
+      background: rgba(0,0,0,0.25);
       cursor: pointer;
       transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .btn-ghost:hover {
-      background: rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.45);
+    }
+
+    .btn-ghost-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #fff;
+    }
+
+    .hero {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 12px;
     }
 
     .hero-title {
       font-size: 2.1rem;
       font-weight: 800;
-      line-height: 1.15;
-      margin-bottom: 10px;
+      line-height: 1.1;
+      margin-bottom: 4px;
     }
 
     .hero-title span {
-      color: #ffe082;
+      color: #ffffff;
+      text-shadow: 0 0 12px rgba(0,0,0,0.45);
     }
 
     .hero-sub {
       font-size: 0.95rem;
       opacity: 0.9;
       max-width: 620px;
-      margin-bottom: 16px;
     }
 
     .sections {
       display: flex;
       flex-direction: column;
-      gap: 22px;
+      gap: 20px;
     }
 
     section {
-      background: rgba(0,0,0,0.18);
+      background: rgba(0,0,0,0.22);
       border-radius: 22px;
-      border: 1px solid rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.15);
       padding: 14px 16px 16px;
-      backdrop-filter: blur(18px);
+      backdrop-filter: blur(20px);
     }
 
     .section-header {
@@ -129,105 +149,124 @@
     }
 
     .section-title {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.18em;
       font-weight: 700;
     }
 
     .section-caption {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       opacity: 0.8;
     }
 
-    /* === DIRECTO / LIVE === */
+    /* ===== DIRECTO ===== */
 
-    .live-wrapper {
+    .live-main {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }
 
-    .live-status {
+    .live-badge-row {
       display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .live-card {
-      border-radius: 18px;
-      padding: 14px 14px 16px;
-      background: rgba(0,0,0,0.25);
-      border: 1px solid rgba(255,255,255,0.18);
-    }
-
-    .live-card.now {
-      background: linear-gradient(135deg, #ff5252, #ff9966);
-      box-shadow: 0 14px 30px rgba(0,0,0,0.4);
-      color: #fff;
-    }
-
-    .live-card-heading {
-      display: flex;
-      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
       align-items: center;
       margin-bottom: 6px;
-      gap: 8px;
     }
 
-    .live-pill {
+    .pill {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
       padding: 4px 10px;
-      border-radius: 999px;
       font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      background: rgba(0,0,0,0.28);
-    }
-
-    .live-dot {
-      width: 8px;
-      height: 8px;
       border-radius: 999px;
-      background: #ff5252;
-      box-shadow: 0 0 0 5px rgba(0,0,0,0.3);
-    }
-
-    .live-pill.off {
-      background: rgba(255,255,255,0.06);
-      color: rgba(255,255,255,0.7);
-    }
-
-    .live-label {
-      font-size: 0.75rem;
-      opacity: 0.85;
       text-transform: uppercase;
       letter-spacing: 0.16em;
-      font-weight: 600;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: rgba(0,0,0,0.35);
     }
 
-    .live-title {
-      font-size: 1.0rem;
-      font-weight: 700;
-      letter-spacing: 0.03em;
+    .pill-strong {
+      background: #ffffff;
+      color: var(--sonora-red-dark);
+      border-color: transparent;
+    }
+
+    .live-highlight {
+      background: linear-gradient(
+        135deg,
+        rgba(0,0,0,0.55),
+        rgba(0,0,0,0.25)
+      );
+      border-radius: 18px;
+      padding: 12px 14px 13px;
+      border: 1px solid rgba(255,255,255,0.25);
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr);
+      gap: 10px;
+    }
+
+    .live-now-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      opacity: 0.9;
       margin-bottom: 2px;
     }
 
-    .live-time-line {
-      font-size: 0.85rem;
-      opacity: 0.92;
+    .live-now-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 2px;
     }
 
-    .live-time-line span {
-      font-weight: 600;
+    .live-now-time {
+      font-size: 0.8rem;
+      color: var(--text-soft);
     }
 
-    .live-empty {
+    .live-now-empty {
       font-size: 0.85rem;
+      color: var(--text-soft);
+    }
+
+    .live-next-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
       opacity: 0.9;
+      margin-bottom: 3px;
+    }
+
+    .live-next-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .live-next-time {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+
+    .live-progress {
+      margin-top: 8px;
+      width: 100%;
+      height: 3px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.16);
+      overflow: hidden;
+    }
+
+    .live-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: #ffffff;
+      border-radius: inherit;
+      transition: width 0.4s ease;
     }
 
     .live-grid {
@@ -237,7 +276,7 @@
     }
 
     .live-day {
-      background: rgba(255,255,255,0.06);
+      background: rgba(0,0,0,0.38);
       border-radius: 16px;
       padding: 10px 12px;
       border: 1px solid var(--card-border);
@@ -251,24 +290,36 @@
     }
 
     .live-day-name {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.16em;
       font-weight: 700;
     }
 
+    .live-day-tagline {
+      font-size: 0.76rem;
+      color: var(--text-soft);
+    }
+
     .live-slot {
-      font-size: 0.85rem;
-      opacity: 0.95;
-      padding: 2px 0;
+      font-size: 0.82rem;
+      opacity: 0.96;
+      display: flex;
+      gap: 4px;
+      margin-top: 3px;
     }
 
-    .live-slot span {
+    .live-slot-time {
       font-weight: 600;
-      color: #ffe082;
+      color: #ffffff;
+      min-width: 87px;
     }
 
-    /* === PROGRAMAS EN DIFERIDO === */
+    .live-slot-name {
+      color: var(--text-muted);
+    }
+
+    /* ===== PROGRAMAS EN DIFERIDO ===== */
 
     .programas-list {
       display: flex;
@@ -281,7 +332,7 @@
       flex-direction: column;
       gap: 6px;
       padding: 12px 12px;
-      background: rgba(255,255,255,0.05);
+      background: rgba(0,0,0,0.34);
       border-radius: 16px;
       border: 1px solid var(--card-border);
     }
@@ -293,8 +344,8 @@
     }
 
     .programa-desc {
-      font-size: 0.85rem;
-      opacity: 0.9;
+      font-size: 0.84rem;
+      color: var(--text-muted);
     }
 
     .programa-plataformas {
@@ -305,7 +356,7 @@
     }
 
     .pill-link {
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       padding: 4px 10px;
       border-radius: 999px;
       background: #ffffff;
@@ -320,8 +371,8 @@
     footer {
       text-align: center;
       font-size: 0.8rem;
-      opacity: 0.8;
-      margin-top: 16px;
+      opacity: 0.82;
+      margin-top: 10px;
     }
 
     .floating-player-btn {
@@ -339,37 +390,33 @@
       font-weight: 700;
       box-shadow: 0 10px 24px rgba(0,0,0,0.35);
       z-index: 999;
-      text-decoration: none;
     }
 
     .floating-dot {
       width: 9px;
       height: 9px;
       border-radius: 999px;
-      background: #ff5252;
-      box-shadow: 0 0 0 4px rgba(255,82,82,0.5);
+      background: #00ff7b;
+      box-shadow: 0 0 0 4px rgba(0,255,123,0.35);
+    }
+
+    .floating-player-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 30px rgba(0,0,0,0.45);
     }
 
     @media (min-width: 720px) {
       .hero {
-        display: flex;
+        flex-direction: row;
         justify-content: space-between;
         align-items: flex-end;
         gap: 18px;
-        margin-bottom: 8px;
+        margin-bottom: 12px;
       }
 
       .hero-sub {
         text-align: right;
         margin-left: auto;
-      }
-
-      .live-status {
-        flex-direction: row;
-      }
-
-      .live-card {
-        flex: 1;
       }
 
       .live-grid {
@@ -379,14 +426,14 @@
   </style>
 </head>
 <body>
-
   <div class="page">
     <header>
       <div class="brand">
         <div class="brand-main">SONORA UC3M</div>
         <div class="brand-sub">Programación & podcasts oficiales</div>
       </div>
-      <a class="btn-ghost" href="https://www.instagram.com/sonorauc3m" target="_blank">
+      <a class="btn-ghost" href="https://www.instagram.com/sonorauc3m" target="_blank" rel="noopener">
+        <span class="btn-ghost-dot"></span>
         @sonorauc3m
       </a>
     </header>
@@ -403,26 +450,49 @@
     </div>
 
     <div class="sections">
-
-      <!-- === DIRECTO PRIMERO === -->
+      <!-- DIRECTO -->
       <section>
         <div class="section-header">
-          <div class="section-title">Directo · Martes y Jueves</div>
-          <div class="section-caption">Horario CET · Emisión desde el estudio UC3M</div>
+          <div class="section-title">Directo · Martes y jueves</div>
+          <div class="section-caption">Horario CET · Estudio de radio UC3M</div>
         </div>
 
-        <div class="live-wrapper">
-          <div id="live-status" class="live-status">
-            <!-- JS rellena aquí las tarjetas de AHORA / SIGUIENTE -->
+        <div class="live-main">
+          <!-- Highlight AHORA / SIGUIENTE -->
+          <div class="live-badge-row">
+            <span class="pill pill-strong">En directo</span>
+            <span class="pill">Martes & Jueves</span>
           </div>
 
-          <div id="live-grid" class="live-grid">
-            <!-- JS rellena aquí las columnas Martes / Jueves -->
+          <div class="live-highlight" id="live-highlight">
+            <div>
+              <div class="live-now-label">Ahora mismo</div>
+              <div id="live-now-main">
+                <div class="live-now-empty">
+                  No hay ningún programa en directo en este momento.
+                </div>
+              </div>
+              <div class="live-progress" id="live-progress" style="display:none;">
+                <div class="live-progress-bar" id="live-progress-bar"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="live-next-label">Siguiente</div>
+              <div id="live-next-main">
+                <div class="live-next-time">No hay más programas hoy.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Listado por días -->
+          <div class="live-grid" id="live-grid">
+            <!-- JS rellena aquí -->
           </div>
         </div>
       </section>
 
-      <!-- === PROGRAMAS EN DIFERIDO ABAJO === -->
+      <!-- PROGRAMAS EN DIFERIDO -->
       <section>
         <div class="section-header">
           <div class="section-title">Programas en diferido</div>
@@ -439,13 +509,14 @@
     </div>
   </div>
 
-  <a class="floating-player-btn" href="https://radio.radiobot.org/public/sonora" target="_blank">
+  <!-- Botón fijo para abrir el reproductor de Azuracast -->
+  <a class="floating-player-btn" href="https://radio.radiobot.org/public/sonora" target="_blank" rel="noopener">
     <span class="floating-dot"></span>
     <span>Escuchar en directo</span>
   </a>
 
   <script>
-    // === CONFIG HOJA DE CÁLCULO ===
+    // 🔗 ID de tu Google Sheet
     const SHEET_ID = "1g9f3Ue9GtdaTbpxp3DCXncrNPhjnHPk0m9QTXdfSAxM";
     const ODF_SHEET_NAME  = "OnDemand";
     const LIVE_SHEET_NAME = "Directo";
@@ -468,7 +539,6 @@
           fetchSheet(ODF_SHEET_NAME),
           fetchSheet(LIVE_SHEET_NAME)
         ]);
-
         renderOnDemand(onDemandRows);
         renderLive(liveRows);
       } catch (err) {
@@ -478,7 +548,8 @@
       }
     }
 
-    // === PROGRAMAS EN DIFERIDO ===
+    /* ==== PROGRAMAS EN DIFERIDO ==== */
+
     function renderOnDemand(rows) {
       const cont = document.getElementById("programas-list");
       cont.innerHTML = "";
@@ -524,209 +595,96 @@
       a.className = "pill-link";
       a.href = url;
       a.target = "_blank";
+      a.rel = "noopener";
       a.textContent = label;
       return a;
     }
 
-    // === DIRECTO · MARTES / JUEVES ===
+    /* ==== DIRECTO: AHORA / SIGUIENTE + HORARIO ==== */
 
-    function parseTimeRange(str) {
-      if (!str) return null;
-      const cleaned = str.replace("–", "-"); // por si viene con guión largo
-      const parts = cleaned.split("-").map(p => p.trim()).filter(Boolean);
+    function parseTimeRange(raw) {
+      if (!raw) return null;
 
-      function toMinutes(t) {
-        const [h, m] = t.split(":").map(Number);
-        if (isNaN(h) || isNaN(m)) return null;
-        return h * 60 + m;
-      }
+      // Busca todas las horas tipo 10:30 en el texto (soporta 10:30-10:45 o 10:30 – 10:45)
+      const matches = raw.match(/(\d{1,2}):(\d{2})/g);
+      if (!matches || matches.length === 0) return null;
 
-      if (parts.length === 1) {
-        const start = toMinutes(parts[0]);
-        if (start == null) return null;
-        return { startMin: start, endMin: start + 60 }; // por defecto 1h si no hay fin
+      const [startStr, endStr] = matches;
+      const [sh, sm] = startStr.split(":").map(Number);
+      let eh, em;
+
+      if (endStr) {
+        [eh, em] = endStr.split(":").map(Number);
       } else {
-        const start = toMinutes(parts[0]);
-        const end = toMinutes(parts[1]);
-        if (start == null || end == null) return null;
-        return { startMin: start, endMin: end };
+        // Si no hay fin, asumimos 60 minutos
+        const total = sh * 60 + sm + 60;
+        eh = Math.floor(total / 60);
+        em = total % 60;
       }
+
+      return {
+        startMinutes: sh * 60 + sm,
+        endMinutes: eh * 60 + em,
+        startLabel: startStr,
+        endLabel: endStr || ""
+      };
     }
 
     function renderLive(rows) {
-      const statusCont = document.getElementById("live-status");
-      const gridCont = document.getElementById("live-grid");
-      statusCont.innerHTML = "";
-      gridCont.innerHTML = "";
+      const grid = document.getElementById("live-grid");
+      const nowMain = document.getElementById("live-now-main");
+      const nextMain = document.getElementById("live-next-main");
+      const progressWrap = document.getElementById("live-progress");
+      const progressBar = document.getElementById("live-progress-bar");
+
+      grid.innerHTML = "";
+      nowMain.innerHTML = "";
+      nextMain.innerHTML = "";
+      progressWrap.style.display = "none";
 
       if (!rows.length) {
-        statusCont.textContent = "No hay horarios configurados todavía.";
+        grid.textContent = "No hay horarios configurados todavía.";
+        nowMain.innerHTML = "<div class='live-now-empty'>No hay ningún programa en directo en este momento.</div>";
+        nextMain.innerHTML = "<div class='live-next-time'>No hay programación cargada.</div>";
         return;
       }
 
-      const byDay = {}; // { martes: [slot, ...], jueves: [...] }
+      const byDay = {};
+      const scheduleObjects = [];
 
+      // DIA | HORA | PROGRAMA
       rows.slice(1).forEach(cols => {
-        const [diaRaw, horaRaw, programaRaw] = cols;
-        if (!diaRaw || !horaRaw || !programaRaw) return;
+        const [diaRaw, horaRaw, programa] = cols;
+        if (!diaRaw || !horaRaw || !programa) return;
 
-        const dia = diaRaw.trim().toLowerCase();
-        const tr  = parseTimeRange(horaRaw.trim());
-        if (!tr) return;
+        const dia = diaRaw.trim();
+        const t = parseTimeRange(horaRaw.trim());
+        if (!t) return;
 
-        if (!byDay[dia]) byDay[dia] = [];
-        byDay[dia].push({
-          diaKey: dia,
-          diaLabel: diaRaw.trim(),
-          hora: horaRaw.trim(),
-          programa: programaRaw.trim(),
-          startMin: tr.startMin,
-          endMin: tr.endMin
-        });
+        const slot = {
+          dia,
+          horaTexto: horaRaw.trim(),
+          programa: programa.trim(),
+          startMinutes: t.startMinutes,
+          endMinutes: t.endMinutes,
+          startLabel: t.startLabel,
+          endLabel: t.endLabel
+        };
+
+        const key = dia.toLowerCase();
+        if (!byDay[key]) byDay[key] = [];
+        byDay[key].push(slot);
+        scheduleObjects.push(slot);
       });
 
-      const orderedDays = ["martes", "jueves"];
-
-      // Ordena cada día por hora
-      orderedDays.forEach(d => {
-        if (byDay[d]) {
-          byDay[d].sort((a, b) => a.startMin - b.startMin);
-        }
+      // Ordenamos cada día por hora
+      Object.values(byDay).forEach(list => {
+        list.sort((a, b) => a.startMinutes - b.startMinutes);
       });
 
-      // === Determinar AHORA MISMO / SIGUIENTE ===
-      const now = new Date();
-      const nowMinutes = now.getHours() * 60 + now.getMinutes();
-      const weekday = now.getDay(); // 0=Dom, 1=Lun, 2=Mar, 3=Mié, 4=Jue, 5=Vie, 6=Sáb
-
-      const weekdayMap = { 2: "martes", 4: "jueves" };
-      const todayKey = weekdayMap[weekday] || null;
-
-      let onAirSlot = null;
-      let nextSlot = null;
-
-      if (todayKey && byDay[todayKey]) {
-        const slotsToday = byDay[todayKey];
-
-        for (let i = 0; i < slotsToday.length; i++) {
-          const s = slotsToday[i];
-          if (nowMinutes >= s.startMin && nowMinutes < s.endMin) {
-            onAirSlot = s;
-          } else if (nowMinutes < s.startMin && !nextSlot) {
-            nextSlot = s;
-          }
-        }
-
-        // Si no hay siguiente en el día, miramos el siguiente día de emisión
-        if (!nextSlot) {
-          const todayIdx = orderedDays.indexOf(todayKey);
-          for (let offset = 1; offset < orderedDays.length + 1; offset++) {
-            const dKey = orderedDays[(todayIdx + offset) % orderedDays.length];
-            const daySlots = byDay[dKey];
-            if (daySlots && daySlots.length) {
-              nextSlot = daySlots[0];
-              break;
-            }
-          }
-        }
-      } else {
-        // Hoy no es martes ni jueves: siguiente = primer slot del próximo día de emisión
-        for (let i = 0; i < orderedDays.length; i++) {
-          const dKey = orderedDays[i];
-          const slots = byDay[dKey];
-          if (slots && slots.length) {
-            nextSlot = slots[0];
-            break;
-          }
-        }
-      }
-
-      // === RENDER TARJETAS DE ESTADO ===
-      const nowCard = document.createElement("div");
-      nowCard.className = "live-card " + (onAirSlot ? "now" : "");
-
-      const nowHeader = document.createElement("div");
-      nowHeader.className = "live-card-heading";
-
-      const nowPill = document.createElement("div");
-      nowPill.className = "live-pill" + (onAirSlot ? "" : " off");
-
-      const dot = document.createElement("span");
-      dot.className = "live-dot";
-      if (!onAirSlot) {
-        dot.style.background = "#888";
-        dot.style.boxShadow = "0 0 0 4px rgba(0,0,0,0.4)";
-      }
-
-      const pillText = document.createElement("span");
-      pillText.textContent = onAirSlot ? "EN DIRECTO" : "FUERA DE EMISIÓN";
-
-      nowPill.appendChild(dot);
-      nowPill.appendChild(pillText);
-
-      const nowLabel = document.createElement("div");
-      nowLabel.className = "live-label";
-      nowLabel.textContent = "AHORA MISMO";
-
-      nowHeader.appendChild(nowLabel);
-      nowHeader.appendChild(nowPill);
-      nowCard.appendChild(nowHeader);
-
-      if (onAirSlot) {
-        const title = document.createElement("div");
-        title.className = "live-title";
-        title.textContent = onAirSlot.programa;
-
-        const timeLine = document.createElement("div");
-        timeLine.className = "live-time-line";
-        timeLine.innerHTML = `<span>${onAirSlot.hora}</span> · ${onAirSlot.diaLabel.toUpperCase()}`;
-
-        nowCard.appendChild(title);
-        nowCard.appendChild(timeLine);
-      } else {
-        const empty = document.createElement("div");
-        empty.className = "live-empty";
-        empty.textContent = "No hay ningún programa en directo en este momento.";
-        nowCard.appendChild(empty);
-      }
-
-      const nextCard = document.createElement("div");
-      nextCard.className = "live-card";
-
-      const nextHeader = document.createElement("div");
-      nextHeader.className = "live-card-heading";
-
-      const nextLabel = document.createElement("div");
-      nextLabel.className = "live-label";
-      nextLabel.textContent = "SIGUIENTE";
-
-      nextHeader.appendChild(nextLabel);
-      nextCard.appendChild(nextHeader);
-
-      if (nextSlot) {
-        const title = document.createElement("div");
-        title.className = "live-title";
-        title.textContent = nextSlot.programa;
-
-        const timeLine = document.createElement("div");
-        timeLine.className = "live-time-line";
-        timeLine.innerHTML = `<span>${nextSlot.hora}</span> · ${nextSlot.diaLabel.toUpperCase()}`;
-
-        nextCard.appendChild(title);
-        nextCard.appendChild(timeLine);
-      } else {
-        const empty = document.createElement("div");
-        empty.className = "live-empty";
-        empty.textContent = "No hay más programas programados.";
-        nextCard.appendChild(empty);
-      }
-
-      statusCont.appendChild(nowCard);
-      statusCont.appendChild(nextCard);
-
-      // === RENDER CUADRÍCULA MARTES / JUEVES ===
-      orderedDays.forEach(dKey => {
-        const slots = byDay[dKey];
+      // ==== Render listado MARTES / JUEVES ====
+      ["martes", "jueves"].forEach(key => {
+        const slots = byDay[key];
         if (!slots || !slots.length) return;
 
         const day = document.createElement("div");
@@ -737,20 +695,126 @@
 
         const name = document.createElement("div");
         name.className = "live-day-name";
-        name.textContent = dKey.toUpperCase();
+        name.textContent = key.toUpperCase();
+
+        const tagline = document.createElement("div");
+        tagline.className = "live-day-tagline";
+        tagline.textContent = "Programación de la tarde";
 
         header.appendChild(name);
+        header.appendChild(tagline);
         day.appendChild(header);
 
         slots.forEach(s => {
-          const p = document.createElement("div");
-          p.className = "live-slot";
-          p.innerHTML = `<span>${s.hora}</span> · ${s.programa}`;
-          day.appendChild(p);
+          const row = document.createElement("div");
+          row.className = "live-slot";
+
+          const time = document.createElement("div");
+          time.className = "live-slot-time";
+          time.textContent = s.horaTexto;
+
+          const title = document.createElement("div");
+          title.className = "live-slot-name";
+          title.textContent = s.programa;
+
+          row.appendChild(time);
+          row.appendChild(title);
+          day.appendChild(row);
         });
 
-        gridCont.appendChild(day);
+        grid.appendChild(day);
       });
+
+      // ==== Cálculo AHORA / SIGUIENTE ====
+      const now = new Date();
+      const nowMinutes = now.getHours() * 60 + now.getMinutes();
+
+      const weekday = now.getDay(); // 0=Domingo, 1=Lunes, 2=Martes...
+      const todayName =
+        weekday === 2 ? "martes" :
+        weekday === 4 ? "jueves" : null;
+
+      let todaysSlots = [];
+      if (todayName) {
+        todaysSlots = scheduleObjects.filter(s =>
+          s.dia.trim().toLowerCase() === todayName
+        );
+      }
+
+      let nowSlot = null;
+      let nextSlot = null;
+
+      if (todaysSlots.length) {
+        for (const s of todaysSlots) {
+          if (nowMinutes >= s.startMinutes && nowMinutes < s.endMinutes) {
+            nowSlot = s;
+          } else if (nowMinutes < s.startMinutes) {
+            if (!nextSlot || s.startMinutes < nextSlot.startMinutes) {
+              nextSlot = s;
+            }
+          }
+        }
+      }
+
+      // Rellenar UI de "Ahora mismo"
+      if (nowSlot) {
+        const title = document.createElement("div");
+        title.className = "live-now-title";
+        title.textContent = nowSlot.programa;
+
+        const time = document.createElement("div");
+        time.className = "live-now-time";
+        time.textContent = `${nowSlot.horaTexto} · ${nowSlot.dia.toUpperCase()}`;
+
+        nowMain.appendChild(title);
+        nowMain.appendChild(time);
+
+        // Progreso
+        const total = nowSlot.endMinutes - nowSlot.startMinutes;
+        const elapsed = nowMinutes - nowSlot.startMinutes;
+        const pct = Math.min(100, Math.max(0, (elapsed / total) * 100));
+        progressBar.style.width = pct + "%";
+        progressWrap.style.display = "block";
+      } else {
+        const empty = document.createElement("div");
+        empty.className = "live-now-empty";
+        empty.textContent = "No hay ningún programa en directo en este momento.";
+        nowMain.appendChild(empty);
+      }
+
+      // "Siguiente"
+      if (!nextSlot) {
+        // Si no hay siguiente hoy pero sí hay programación futura (otro día)
+        if (!todayName && scheduleObjects.length) {
+          const future = scheduleObjects.slice().sort((a, b) => a.startMinutes - b.startMinutes)[0];
+          const txt = document.createElement("div");
+          txt.className = "live-next-time";
+          txt.textContent = `${future.horaTexto} · ${future.dia.toUpperCase()} · ${future.programa}`;
+          nextMain.appendChild(txt);
+        } else if (todayName && todaysSlots.length) {
+          const first = todaysSlots[0];
+          const txt = document.createElement("div");
+          txt.className = "live-next-time";
+          txt.textContent = `Próxima emisión: ${first.horaTexto} · ${first.dia.toUpperCase()} · ${first.programa}`;
+          nextMain.appendChild(txt);
+        } else {
+          const txt = document.createElement("div");
+          txt.className = "live-next-time";
+          txt.textContent = "No hay más programas hoy.";
+          nextMain.appendChild(txt);
+        }
+      } else {
+        const title = document.createElement("div");
+        title.className = "live-next-title";
+        title.textContent = nextSlot.programa;
+
+        const time = document.createElement("div");
+        time.className = "live-next-time";
+        time.textContent = `${nextSlot.horaTexto} · ${nextSlot.dia.toUpperCase()}`;
+
+        nextMain.appendChild(title);
+        nextMain.appendChild(time);
+      }
     }
 
     document.addEventListener("DOMContentLoaded", loadData);
