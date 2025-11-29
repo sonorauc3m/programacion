@@ -16,7 +16,7 @@
       --pill-bg: rgba(255,255,255,0.06);
       --text-main: #ffffff;
       --text-muted: #d4d4d4;
-      --text-soft:  #a3a3a3;
+      --text-soft: #a3a3a3;
     }
 
     * {
@@ -30,7 +30,7 @@
       font-family: "Helvetica Now Display", "Helvetica Neue", Helvetica,
         system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       background:
-        radial-gradient(circle at top left, rgba(190,22,34,0.85) 0%, transparent 45%),
+        radial-gradient(circle at top left, rgba(190,22,34,0.9) 0%, transparent 45%),
         radial-gradient(circle at bottom right, #300309 0%, #050307 55%, #000000 100%);
       color: var(--text-main);
       display: flex;
@@ -43,13 +43,13 @@
     }
 
     .page {
+      width: 100%;
       max-width: 1200px;
       margin: 0 auto;
       padding: 20px 20px 120px;
-      width: 100%;
     }
 
-    /* === HEADER === */
+    /* === HEADER / NAVBAR === */
 
     header {
       display: flex;
@@ -74,7 +74,7 @@
 
     .brand-sub {
       font-size: 0.78rem;
-      opacity: 0.82;
+      opacity: 0.9;
     }
 
     .btn-ghost {
@@ -91,7 +91,6 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      white-space: nowrap;
     }
 
     .btn-ghost:hover {
@@ -107,7 +106,7 @@
       box-shadow: 0 0 0 4px rgba(0,255,123,0.28);
     }
 
-    /* === HERO === */
+    /* === HERO / BLOQUE EN DIRECTO === */
 
     .hero {
       display: grid;
@@ -121,6 +120,13 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+    }
+
+    .hero-tag {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      opacity: 0.85;
     }
 
     .hero-title {
@@ -138,13 +144,6 @@
       font-size: 0.96rem;
       opacity: 0.9;
       max-width: 520px;
-    }
-
-    .hero-tag {
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      opacity: 0.85;
     }
 
     .hero-badge-row {
@@ -179,11 +178,13 @@
       overflow: hidden;
       min-height: 170px;
       background:
-        radial-gradient(circle at top left, rgba(255,255,255,0.18) 0%, transparent 55%),
-        linear-gradient(135deg, rgba(0,0,0,0.8), rgba(0,0,0,0.4));
-      border: 1px solid rgba(255,255,255,0.2);
+        radial-gradient(circle at top left, rgba(190,22,34,0.5) 0%, transparent 55%),
+        linear-gradient(135deg, rgba(0,0,0,0.95), rgba(0,0,0,0.6));
+      border: 1px solid rgba(190,22,34,0.9);
       padding: 14px 16px 14px;
-      box-shadow: 0 24px 60px rgba(0,0,0,0.8);
+      box-shadow:
+        0 0 24px rgba(190,22,34,0.35),
+        0 24px 60px rgba(0,0,0,0.9);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -208,8 +209,10 @@
       font-size: 0.72rem;
       padding: 3px 10px;
       border-radius: 999px;
-      background: rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.5);
       border: 1px solid rgba(255,255,255,0.35);
+      text-align: right;
+      white-space: nowrap;
     }
 
     .hero-live-main {
@@ -265,6 +268,10 @@
       gap: 12px;
     }
 
+    .hero-cta-row.hidden {
+      display: none;
+    }
+
     .hero-cta {
       display: inline-flex;
       align-items: center;
@@ -317,7 +324,7 @@
       transition: width 0.4s ease;
     }
 
-    /* === SECCIONES === */
+    /* === SECTIONS === */
 
     .sections {
       display: flex;
@@ -354,7 +361,7 @@
       opacity: 0.8;
     }
 
-    /* === DIRECTO (LISTA) === */
+    /* === DIRECTO: LISTA MARTES / JUEVES === */
 
     .live-grid {
       display: grid;
@@ -402,7 +409,7 @@
       color: var(--text-muted);
     }
 
-    /* === ON DEMAND (CARRUSEL) === */
+    /* === PROGRAMAS EN DIFERIDO (CARRUSEL ESCRITORIO) === */
 
     .programas-list {
       display: flex;
@@ -473,24 +480,26 @@
       filter: brightness(1.05);
     }
 
+    /* === FOOTER === */
+
     footer {
       text-align: center;
       font-size: 0.8rem;
       opacity: 0.82;
       margin-top: 8px;
-    }
-
-    .footer-ig {
-      margin-top: 4px;
-      font-size: 0.75rem;
-      opacity: 0.75;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: center;
+      justify-content: center;
     }
 
     .footer-ig a {
-      text-decoration: underline;
+      font-size: 0.78rem;
+      opacity: 0.9;
     }
 
-    /* === BOTÓN FLOTANTE === */
+    /* === BOTÓN FLOTANTE REPRODUCTOR === */
 
     .floating-player-btn {
       position: fixed;
@@ -522,25 +531,39 @@
       box-shadow: 0 16px 32px rgba(0,0,0,0.7);
     }
 
-    /* === RESPONSIVE TABLET === */
+    /* === RESPONSIVE === */
 
     @media (max-width: 840px) {
       .hero {
         grid-template-columns: 1fr;
-        gap: 18px;
+        gap: 16px;
+      }
+      .hero-right {
+        order: -1; /* primero EN DIRECTO en tablets */
       }
     }
 
-    /* === RESPONSIVE GENERAL MÓVIL === */
-
     @media (max-width: 640px) {
       .page {
-        padding: 16px 14px 100px;
+        padding: 14px 12px 90px;
       }
 
       header {
         flex-direction: column;
         align-items: flex-start;
+        gap: 6px;
+      }
+
+      .brand-main {
+        font-size: 1.3rem;
+      }
+      .brand-sub {
+        font-size: 0.75rem;
+      }
+
+      /* Ocultar bloque de texto "Todo lo que suena en Sonora..." en móvil */
+      .hero-left {
+        display: none;
       }
 
       /* Ocultar botón grande @sonorauc3m arriba en móvil */
@@ -548,67 +571,16 @@
         display: none;
       }
 
-      /* Ocultar texto "Todo lo que suena en Sonora..." en móvil */
-      .hero-left {
-        display: none;
-      }
-
       .hero {
         grid-template-columns: 1fr;
-        gap: 14px;
-        margin-bottom: 12px;
-      }
-
-      .programa-card {
-        flex: 0 0 220px;
-      }
-    }
-
-    /* === EXTRA MÓVIL PEQUEÑO (iPhone) === */
-
-    @media (max-width: 480px) {
-      .page {
-        padding: 14px 10px 90px;
-      }
-
-      .brand-main {
-        font-size: 1.3rem;
-      }
-
-      .brand-sub {
-        font-size: 0.72rem;
+        gap: 12px;
+        margin-bottom: 14px;
       }
 
       .hero-right {
+        min-height: 0;
         padding: 12px 12px 12px;
-        border-radius: 20px;
-        min-height: auto;
-      }
-
-      .hero-live-label {
-        font-size: 0.66rem;
-        letter-spacing: 0.18em;
-      }
-
-      .hero-live-tag {
-        font-size: 0.66rem;
-        padding-inline: 8px;
-      }
-
-      .hero-live-title {
-        font-size: 0.98rem;
-      }
-
-      .hero-live-time {
-        font-size: 0.78rem;
-      }
-
-      .hero-live-next-label {
-        font-size: 0.68rem;
-      }
-
-      .hero-live-next {
-        font-size: 0.8rem;
+        border-radius: 18px;
       }
 
       section {
@@ -617,38 +589,27 @@
       }
 
       .section-title {
-        font-size: 0.8rem;
-        letter-spacing: 0.18em;
+        font-size: 0.82rem;
+        letter-spacing: 0.16em;
       }
 
-      .section-caption {
-        font-size: 0.72rem;
-      }
-
-      .live-slot {
-        font-size: 0.78rem;
+      .live-day {
+        padding: 8px 10px;
       }
 
       .live-slot-time {
-        min-width: 82px;
+        min-width: 80px;
+      }
+
+      /* En móvil, programas en columna, no carrusel */
+      .programas-list {
+        flex-direction: column;
+        overflow-x: visible;
       }
 
       .programa-card {
-        flex: 0 0 210px;
-      }
-
-      .floating-player-btn {
-        left: 50%;
-        right: auto;
-        bottom: 10px;
-        transform: translateX(-50%);
-        width: calc(100% - 32px);
-        justify-content: center;
-        padding-inline: 12px;
-      }
-
-      .floating-player-btn:hover {
-        transform: translateX(-50%) translateY(-1px);
+        flex: 1 1 auto;
+        width: 100%;
       }
     }
 
@@ -662,4 +623,405 @@
 <body>
   <div class="page">
     <header>
-     
+      <div class="brand">
+        <div class="brand-main">SONORA UC3M</div>
+        <div class="brand-sub">La radio de la Universidad Carlos III de Madrid</div>
+      </div>
+      <a class="btn-ghost" href="https://www.instagram.com/sonorauc3m" target="_blank" rel="noopener">
+        <span class="btn-ghost-dot"></span>
+        @sonorauc3m
+      </a>
+    </header>
+
+    <!-- HERO + BLOQUE EN DIRECTO -->
+    <div class="hero">
+      <div class="hero-left">
+        <div class="hero-tag">Todo lo que suena en</div>
+        <h1 class="hero-title"><span>Sonora</span></h1>
+        <p class="hero-sub">
+          Martes y jueves en directo desde la UC3M. El resto del tiempo, programas originales para escuchar cuando quieras.
+        </p>
+        <div class="hero-badge-row">
+          <span class="pill pill-strong">Radio en directo</span>
+          <span class="pill">Martes & Jueves</span>
+          <span class="pill">Programas originales</span>
+        </div>
+      </div>
+
+      <div class="hero-right" id="hero-live-card">
+        <div class="hero-live-header">
+          <div class="hero-live-label">En directo</div>
+          <div class="hero-live-tag">
+            Estudio Sonora 15.0.27 (Campus de Getafe-UC3M)
+          </div>
+        </div>
+
+        <div class="hero-live-main" id="hero-live-main">
+          <div class="hero-live-empty">
+            No hay ningún programa en directo en este momento.
+          </div>
+        </div>
+
+        <div>
+          <div class="hero-live-next-label">Siguiente</div>
+          <div class="hero-live-next" id="hero-live-next">
+            No hay más programas programados para hoy.
+          </div>
+        </div>
+
+        <div class="hero-cta-row" id="hero-cta-row">
+          <a class="hero-cta" href="https://radio.radiobot.org/public/sonora" target="_blank" rel="noopener">
+            <span class="hero-cta-dot"></span>
+            <span>Escuchar ahora</span>
+          </a>
+          <div class="hero-progress-wrap">
+            <div class="hero-progress-bar-bg">
+              <div class="hero-progress-bar" id="hero-progress-bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sections">
+      <!-- PROGRAMACIÓN MARTES / JUEVES -->
+      <section>
+        <div class="section-header">
+          <div class="section-title">Programación</div>
+          <div class="section-caption">Martes y jueves</div>
+        </div>
+
+        <div class="live-grid" id="live-grid">
+          <!-- JS rellena aquí -->
+        </div>
+      </section>
+
+      <!-- PROGRAMAS EN DIFERIDO -->
+      <section>
+        <div class="section-header">
+          <div class="section-title">Programas en diferido</div>
+          <div class="section-caption">Escúchalos cuando quieras · Spotify, iVoox, YouTube…</div>
+        </div>
+        <div id="programas-list" class="programas-list">
+          <!-- JS rellena aquí -->
+        </div>
+      </section>
+
+      <footer>
+        <div>La radio de la Universidad Carlos III de Madrid · Sonora UC3M</div>
+        <div class="footer-ig">
+          <a href="https://www.instagram.com/sonorauc3m" target="_blank" rel="noopener">@sonorauc3m</a>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Botón flotante para reproductor -->
+  <a class="floating-player-btn" href="https://radio.radiobot.org/public/sonora" target="_blank" rel="noopener">
+    <span class="floating-dot"></span>
+    <span>Escuchar en directo</span>
+  </a>
+
+  <script>
+    const SHEET_ID = "1g9f3Ue9GtdaTbpxp3DCXncrNPhjnHPk0m9QTXdfSAxM";
+    const ODF_SHEET_NAME  = "OnDemand";
+    const LIVE_SHEET_NAME = "Directo";
+
+    function gvizUrl(sheetName) {
+      return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
+    }
+
+    async function fetchSheet(sheetName) {
+      const res = await fetch(gvizUrl(sheetName));
+      const text = await res.text();
+      const json = JSON.parse(text.substr(47).slice(0, -2));
+      const rows = json.table.rows || [];
+      return rows.map(r => (r.c || []).map(c => (c && c.v) ? String(c.v) : ""));
+    }
+
+    async function loadData() {
+      try {
+        const [onDemandRows, liveRows] = await Promise.all([
+          fetchSheet(ODF_SHEET_NAME),
+          fetchSheet(LIVE_SHEET_NAME)
+        ]);
+        renderOnDemand(onDemandRows);
+        renderLive(liveRows);
+      } catch (err) {
+        console.error("Error cargando datos:", err);
+        document.getElementById("programas-list").innerHTML =
+          "<div style='font-size:0.85rem;opacity:0.8;'>No se ha podido cargar la programación ahora mismo.</div>";
+      }
+    }
+
+    function renderOnDemand(rows) {
+      const cont = document.getElementById("programas-list");
+      cont.innerHTML = "";
+
+      if (!rows.length) {
+        cont.textContent = "No hay programas configurados todavía.";
+        return;
+      }
+
+      rows.slice(1).forEach(cols => {
+        const [nombre, descripcion, spotify, ivoox, youtube] = cols;
+        if (!nombre) return;
+
+        const card = document.createElement("article");
+        card.className = "programa-card";
+
+        const name = document.createElement("div");
+        name.className = "programa-nombre";
+        name.textContent = nombre;
+
+        const desc = document.createElement("div");
+        desc.className = "programa-desc";
+        desc.textContent = descripcion || "";
+
+        const plats = document.createElement("div");
+        plats.className = "programa-plataformas";
+
+        if (spotify) plats.appendChild(createPlatButton("Spotify", spotify));
+        if (ivoox)   plats.appendChild(createPlatButton("iVoox", ivoox));
+        if (youtube) plats.appendChild(createPlatButton("YouTube", youtube));
+
+        card.appendChild(name);
+        if (descripcion) card.appendChild(desc);
+        if (plats.children.length) card.appendChild(plats);
+
+        cont.appendChild(card);
+      });
+    }
+
+    function createPlatButton(label, url) {
+      const a = document.createElement("a");
+      a.className = "pill-link";
+      a.href = url;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.textContent = label;
+      return a;
+    }
+
+    function parseTimeRange(raw) {
+      if (!raw) return null;
+      const matches = raw.match(/(\d{1,2}):(\d{2})/g);
+      if (!matches || matches.length === 0) return null;
+
+      const [startStr, endStr] = matches;
+      const [sh, sm] = startStr.split(":").map(Number);
+      let eh, em;
+
+      if (endStr) {
+        [eh, em] = endStr.split(":").map(Number);
+      } else {
+        const total = sh * 60 + sm + 60;
+        eh = Math.floor(total / 60);
+        em = total % 60;
+      }
+
+      return {
+        startMinutes: sh * 60 + sm,
+        endMinutes: eh * 60 + em
+      };
+    }
+
+    function renderLive(rows) {
+      const grid           = document.getElementById("live-grid");
+      const heroMain       = document.getElementById("hero-live-main");
+      const heroNext       = document.getElementById("hero-live-next");
+      const heroProgressEl = document.getElementById("hero-progress-bar");
+      const heroCtaRow     = document.getElementById("hero-cta-row");
+
+      grid.innerHTML = "";
+      heroMain.innerHTML = "";
+      heroNext.innerHTML = "";
+
+      if (!rows.length) {
+        grid.textContent = "No hay horarios configurados todavía.";
+        heroMain.innerHTML = "<div class='hero-live-empty'>No hay ningún programa en directo en este momento.</div>";
+        heroNext.textContent = "No hay programación cargada.";
+        heroCtaRow.classList.add("hidden");
+        return;
+      }
+
+      const dayMap = {
+        "domingo": 0,
+        "lunes": 1,
+        "martes": 2,
+        "miercoles": 3,
+        "miércoles": 3,
+        "jueves": 4,
+        "viernes": 5,
+        "sabado": 6,
+        "sábado": 6
+      };
+      const WEEK_MIN = 7 * 24 * 60;
+
+      const byDay = {};
+      const scheduleObjects = [];
+
+      rows.slice(1).forEach(cols => {
+        const [diaRaw, horaRaw, programa] = cols;
+        if (!diaRaw || !horaRaw || !programa) return;
+
+        const diaFull = diaRaw.trim();
+        const dayBase = diaFull.toLowerCase().split(" ")[0]; // "martes", "martes 24" -> "martes"
+        const dayIndex = dayMap[dayBase];
+        if (dayIndex === undefined) return; // ignoramos filas raras
+
+        const t = parseTimeRange(horaRaw.trim());
+        if (!t) return;
+
+        const slot = {
+          dia: diaFull,
+          dayBase,
+          dayIndex,
+          horaTexto: horaRaw.trim(),
+          programa: programa.trim(),
+          startMinutes: t.startMinutes,
+          endMinutes: t.endMinutes,
+          weekStartMinutes: dayIndex * 24 * 60 + t.startMinutes
+        };
+
+        if (!byDay[dayBase]) byDay[dayBase] = [];
+        byDay[dayBase].push(slot);
+        scheduleObjects.push(slot);
+      });
+
+      Object.values(byDay).forEach(list => {
+        list.sort((a, b) => a.startMinutes - b.startMinutes);
+      });
+
+      // GRID SOLO MARTES / JUEVES
+      ["martes", "jueves"].forEach(key => {
+        const slots = byDay[key];
+        if (!slots || !slots.length) return;
+
+        const day = document.createElement("div");
+        day.className = "live-day";
+
+        const header = document.createElement("div");
+        header.className = "live-day-header";
+
+        const name = document.createElement("div");
+        name.className = "live-day-name";
+        name.textContent = key.toUpperCase();
+
+        header.appendChild(name);
+        day.appendChild(header);
+
+        slots.forEach(s => {
+          const row = document.createElement("div");
+          row.className = "live-slot";
+
+          const time = document.createElement("div");
+          time.className = "live-slot-time";
+          time.textContent = s.horaTexto;
+
+          const title = document.createElement("div");
+          title.className = "live-slot-name";
+          title.textContent = s.programa;
+
+          row.appendChild(time);
+          row.appendChild(title);
+          day.appendChild(row);
+        });
+
+        grid.appendChild(day);
+      });
+
+      const now = new Date();
+      const nowMinutes = now.getHours() * 60 + now.getMinutes();
+      const weekday = now.getDay(); // 0=Dom,1=Lun,2=Mar...
+
+      const weekdayNames = [
+        "domingo", "lunes", "martes", "miercoles", "jueves", "viernes", "sabado"
+      ];
+      const todayBase = weekdayNames[weekday];
+      const nowWeekMinutes = weekday * 24 * 60 + nowMinutes;
+
+      let todaysSlots = scheduleObjects.filter(s => s.dayBase === todayBase);
+
+      let nowSlot = null;
+      let nextSlot = null;
+
+      if (todaysSlots.length) {
+        for (const s of todaysSlots) {
+          if (nowMinutes >= s.startMinutes && nowMinutes < s.endMinutes) {
+            nowSlot = s;
+          } else if (nowMinutes < s.startMinutes) {
+            if (!nextSlot || s.startMinutes < nextSlot.startMinutes) {
+              nextSlot = s;
+            }
+          }
+        }
+      }
+
+      // Ahora mismo
+      if (nowSlot) {
+        const title = document.createElement("div");
+        title.className = "hero-live-title";
+        title.textContent = nowSlot.programa;
+
+        const time = document.createElement("div");
+        time.className = "hero-live-time";
+        time.innerHTML =
+          `<span class="hero-live-time-dot"></span>${nowSlot.horaTexto} · ${nowSlot.dia.toUpperCase()}`;
+
+        heroMain.appendChild(title);
+        heroMain.appendChild(time);
+
+        const total = nowSlot.endMinutes - nowSlot.startMinutes;
+        const elapsed = nowMinutes - nowSlot.startMinutes;
+        const pct = Math.min(100, Math.max(0, (elapsed / total) * 100));
+        heroProgressEl.style.width = pct + "%";
+
+        heroCtaRow.classList.remove("hidden");
+      } else {
+        const empty = document.createElement("div");
+        empty.className = "hero-live-empty";
+        empty.textContent = "No hay ningún programa en directo en este momento.";
+        heroMain.appendChild(empty);
+
+        heroProgressEl.style.width = "0%";
+        heroCtaRow.classList.add("hidden"); // sin botón si no hay directo
+      }
+
+      // Función para encontrar el siguiente en toda la semana
+      function findNextAcrossWeek(slots, nowWeekMin) {
+        if (!slots.length) return null;
+        let best = null;
+        let bestDelta = WEEK_MIN + 1;
+
+        for (const s of slots) {
+          const slotMin = s.weekStartMinutes;
+          let delta = slotMin - nowWeekMin;
+          if (delta <= 0) delta += WEEK_MIN;
+          if (delta < bestDelta) {
+            bestDelta = delta;
+            best = s;
+          }
+        }
+        return best;
+      }
+
+      // Siguiente
+      if (!nextSlot) {
+        const future = findNextAcrossWeek(scheduleObjects, nowWeekMinutes);
+        if (future) {
+          heroNext.textContent =
+            `${future.horaTexto} · ${future.dia.toUpperCase()} · ${future.programa}`;
+        } else {
+          heroNext.textContent = "No hay más programas programados.";
+        }
+      } else {
+        heroNext.textContent =
+          `${nextSlot.horaTexto} · ${nextSlot.dia.toUpperCase()} · ${nextSlot.programa}`;
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadData);
+  </script>
+</body>
+</html>
