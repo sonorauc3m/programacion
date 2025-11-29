@@ -129,15 +129,13 @@
       opacity: 0.85;
     }
 
-    .hero-title {
-      font-size: 2.5rem;
-      font-weight: 800;
-      line-height: 1.08;
-    }
-
-    .hero-title span {
-      color: #ffffff;
-      text-shadow: 0 0 26px rgba(0,0,0,0.55);
+    /* nuevo: logo grande Sonora en el hero */
+    .hero-logo {
+      width: 260px;
+      max-width: 100%;
+      display: block;
+      margin-top: 4px;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6));
     }
 
     .hero-sub {
@@ -539,7 +537,7 @@
         gap: 16px;
       }
       .hero-right {
-        order: -1; /* primero EN DIRECTO en tablets */
+        order: -1;
       }
     }
 
@@ -561,12 +559,11 @@
         font-size: 0.75rem;
       }
 
-      /* Ocultar bloque de texto "Todo lo que suena en Sonora..." en móvil */
+      /* ocultamos bloque de texto+logo en móvil */
       .hero-left {
         display: none;
       }
 
-      /* Ocultar botón grande @sonorauc3m arriba en móvil */
       .btn-ghost {
         display: none;
       }
@@ -601,7 +598,6 @@
         min-width: 80px;
       }
 
-      /* En móvil, programas en columna, no carrusel */
       .programas-list {
         flex-direction: column;
         overflow-x: visible;
@@ -637,7 +633,8 @@
     <div class="hero">
       <div class="hero-left">
         <div class="hero-tag">Todo lo que suena en</div>
-        <h1 class="hero-title"><span>Sonora</span></h1>
+        <!-- aquí usamos el logo en vez del texto "Sonora" -->
+        <img src="sonora_2.1_blanco.png" alt="Sonora UC3M" class="hero-logo" />
         <p class="hero-sub">
           Martes y jueves en directo desde la UC3M. El resto del tiempo, programas originales para escuchar cuando quieras.
         </p>
@@ -691,9 +688,7 @@
           <div class="section-caption">Martes y jueves</div>
         </div>
 
-        <div class="live-grid" id="live-grid">
-          <!-- JS rellena aquí -->
-        </div>
+        <div class="live-grid" id="live-grid"></div>
       </section>
 
       <!-- PROGRAMAS EN DIFERIDO -->
@@ -702,9 +697,7 @@
           <div class="section-title">Programas en diferido</div>
           <div class="section-caption">Escúchalos cuando quieras · Spotify, iVoox, YouTube…</div>
         </div>
-        <div id="programas-list" class="programas-list">
-          <!-- JS rellena aquí -->
-        </div>
+        <div id="programas-list" class="programas-list"></div>
       </section>
 
       <footer>
@@ -866,7 +859,7 @@
         if (!diaRaw || !horaRaw || !programa) return;
 
         const diaFull = diaRaw.trim();
-        const dayBase = diaFull.toLowerCase().split(" ")[0]; // "martes", "martes 24" -> "martes"
+        const dayBase = diaFull.toLowerCase().split(" ")[0];
         const dayIndex = dayMap[dayBase];
         if (dayIndex === undefined) return;
 
@@ -893,7 +886,6 @@
         list.sort((a, b) => a.startMinutes - b.startMinutes);
       });
 
-      // GRID SOLO MARTES / JUEVES
       ["martes", "jueves"].forEach(key => {
         const slots = byDay[key];
         if (!slots || !slots.length) return;
@@ -933,7 +925,7 @@
 
       const now = new Date();
       const nowMinutes = now.getHours() * 60 + now.getMinutes();
-      const weekday = now.getDay(); // 0=Dom,1=Lun,2=Mar...
+      const weekday = now.getDay();
 
       const weekdayNames = [
         "domingo", "lunes", "martes", "miercoles", "jueves", "viernes", "sabado"
@@ -958,7 +950,6 @@
         }
       }
 
-      // Ahora mismo
       if (nowSlot) {
         const title = document.createElement("div");
         title.className = "hero-live-title";
@@ -1020,8 +1011,6 @@
     }
 
     document.addEventListener("DOMContentLoaded", loadData);
-
-    /* 🔁 Auto-refresh cada 20 segundos */
     setInterval(loadData, 20000);
   </script>
 </body>
